@@ -7,3 +7,7 @@ import os
 def getContextLangflow(data, userQuery):
 
     return
+
+def generateEmailLangflow(userName, address, contactNo, awbNo, situation):
+
+    return
