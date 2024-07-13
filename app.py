@@ -153,21 +153,11 @@ def triggerEmail():
 
     for inp in req_inp:
         if inp not in args:
-            return jsonify({"error": f"Missing {inp} in request body"}), 400
+            return jsonify({"error": f"Missing {inp} in request body"}), 400  
+        
+    avjoService.triggerEmailService(args["user name"], args["address"],args["contact no"],args["situation"])
 
-    if "awb no" not in args:
-        args["awb no"] = None
-
-    avjoService.triggerEmailService(
-        args["user name"],
-        args["address"],
-        args["contact no"],
-        args["awb no"],
-        args["situation"],
-    )
-
-
-@app.route("/generateReport", methods=["POST"])
+@app.route('/generateReport', methods=['POST'])
 def generateReport():
     """Generate a Report of the fraud & store it in DB"""
     # Check for required headers
