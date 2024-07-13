@@ -14,6 +14,12 @@ def getContextService(userId, userQuery):
     context = avjoLangflowFunctions.getContextLangflow(data, userQuery)
     return context
 
+def checkFraudService(situation):
+    '''Check from the RAG model if the sitaution is Fraud and generate more information about the situation accordingly'''
+    
+    fraudContext = avjoLangflowFunctions.generateFraudContext(situation)
+    return fraudContext
+
 def triggerEmailService(userName, address, contactNo, awbNo, situation):
     '''Generate email from provided data, with the help of langflow agent, and trigger email to cyber dept.'''
     
