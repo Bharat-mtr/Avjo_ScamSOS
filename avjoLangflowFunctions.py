@@ -8,6 +8,10 @@ def getContextLangflow(data, userQuery):
 
     return
 
+def generateFraudContext(situation):
+
+    return
+
 def generateEmailLangflow(userName, address, contactNo, awbNo, situation):
-    
+
     return

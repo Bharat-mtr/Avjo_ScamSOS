@@ -127,6 +127,11 @@ def checkFraud():
     data = request.json
     args = data["args"]
 
+    if "situation" not in args:
+        return jsonify({"error": f"Missing situation in request body"}), 400
+
+    fraudContext = avjoService.checkFraudService(args["situation"])
+
     return jsonify("This has happened before its a fraud i see")
 
 
