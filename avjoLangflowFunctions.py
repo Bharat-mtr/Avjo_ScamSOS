@@ -29,7 +29,7 @@ def generateFraudContext(situation):
     context = result[0].outputs[0].results['message'].data['text']
     return context
 
-def generateEmailLangflow(userName, address, contactNo, awbNo, situation): 
+def generateEmailLangflow(userName, address, contactNo, situation): 
     input_value = {"User Name":userName,"Address":address,"Contact Number":contactNo,"Situation":situation}
     TWEAKS = {
     "ChatInput-txKLO": {},

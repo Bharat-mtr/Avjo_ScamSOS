@@ -52,7 +52,6 @@ def checkFraudService(situation):
     fraudContext = avjoLangflowFunctions.generateFraudContext(situation)
     return fraudContext
 
-
 def triggerEmailService(userName, address, contactNo, situation):
     """Generate email from provided data, with the help of langflow agent, and trigger email to cyber dept."""
 
