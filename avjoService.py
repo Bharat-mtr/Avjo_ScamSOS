@@ -58,7 +58,9 @@ def triggerEmailService(userName, address, contactNo, situation):
     subject, body = avjoLangflowFunctions.generateEmailLangflow(
         userName, address, contactNo, situation
     )
+    print(body, subject)
+    
 
     # Trigger email to cyber dept mailId
 
-    return "Email Triggered"
+    return subject, body
