@@ -30,6 +30,7 @@ def add_user():
         username=data["username"],
         address=data["address"],
         contact=data.get("contact", ""),
+        context=data.get("context"),
     )
     db.session.add(new_user)
     db.session.commit()
@@ -50,6 +51,22 @@ def get_all_users():
             }
             for user in users
         ]
+    )
+
+
+@app.route("/user/<int:user_id>", methods=["GET"])
+def get_user(user_id):
+    user = User.query.get(user_id)
+    if user is None:
+        return jsonify({"error": "User not found!"}), 404
+    return jsonify(
+        {
+            "id": user.id,
+            "username": user.username,
+            "address": user.address,
+            "context": user.context,
+            "contact": user.contact,
+        }
     )
 
 
@@ -150,11 +167,14 @@ def triggerEmail():
 
     for inp in req_inp:
         if inp not in args:
-            return jsonify({"error": f"Missing {inp} in request body"}), 400  
-        
-    avjoService.triggerEmailService(args["user name"], args["address"],args["contact no"],args["situation"])
+            return jsonify({"error": f"Missing {inp} in request body"}), 400
 
-@app.route('/generateReport', methods=['POST'])
+    avjoService.triggerEmailService(
+        args["user name"], args["address"], args["contact no"], args["situation"]
+    )
+
+
+@app.route("/generateReport", methods=["POST"])
 def generateReport():
     """Generate a Report of the fraud & store it in DB"""
     # Check for required headers

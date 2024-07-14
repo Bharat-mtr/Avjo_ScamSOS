@@ -5,9 +5,6 @@ from dotenv import load_dotenv
 import os
 import re
 
-def getContextLangflow(data, userQuery):
-
-    return
 
 def generateFraudContext(situation): 
     TWEAKS = {
