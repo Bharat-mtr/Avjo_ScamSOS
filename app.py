@@ -14,9 +14,9 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    address = db.Column(db.String(120), unique=True, nullable=False)
-    contact = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=False, nullable=False)
+    address = db.Column(db.String(120), unique=False, nullable=False)
+    contact = db.Column(db.String(120), unique=False, nullable=False)
     context = db.Column(db.Text)
 
     def __repr__(self):
@@ -175,14 +175,14 @@ def triggerEmail():
     args = data["args"]
     print("Args received", args)
     # name, address, contact number, awb number, breif overview of situation
-    req_inp = ["user name", "address", "contact no", "situation"]
+    req_inp = ["user name", "address", "contact number", "situation"]
 
     for inp in req_inp:
         if inp not in args:
             return jsonify({"error": f"Missing {inp} in request body"}), 400
    
         
-    subject, body = avjoService.triggerEmailService(args["user name"], args["address"],args["contact no"],args["situation"])
+    subject, body = avjoService.triggerEmailService(args["user name"], args["address"],args["contact number"],args["situation"])
     print(subject, body)
     return jsonify("Email triggered")
 
