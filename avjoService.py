@@ -48,8 +48,7 @@ def getContextService(userId):
 
 def checkFraudService(situation):
     """Check from the RAG model if the sitaution is Fraud and generate more information about the situation accordingly"""
-
-    fraudContext = avjoLangflowFunctions.generateFraudContext(situation)
+    fraudContext = avjoLangflowFunctions.generateFraudContext(situation) 
     return fraudContext
 
 def triggerEmailService(userName, address, contactNo, situation):
@@ -58,7 +57,6 @@ def triggerEmailService(userName, address, contactNo, situation):
     subject, body = avjoLangflowFunctions.generateEmailLangflow(
         userName, address, contactNo, situation
     )
-    print(body, subject)
     
 
     # Trigger email to cyber dept mailId

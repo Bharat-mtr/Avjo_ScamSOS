@@ -84,6 +84,7 @@ def update_user_context(user_id):
 
 @app.route("/checkDoc", methods=["POST"])
 def checkDoc():
+    print("POST call on checkDoc")
     """Check if the documents are uploaded or not"""
     # Check for required headers
     if (
@@ -95,17 +96,23 @@ def checkDoc():
     # Get input from body
     data = request.json
     args = data["args"]
+    print("Args received", args)
 
     if "user id" not in args:
         return jsonify({"error": "Missing 'user id' in request body"}), 400
 
     result = avjoService.checkDocService(args["user id"])
-
-    return jsonify("No documents Uploaded")
+    if result:
+        response="Documents are uploaded"
+    else:
+        response="No documents are uploaded"    
+    print("checkDoc output is ", response)
+    return jsonify(response)
 
 
 @app.route("/getContext", methods=["POST"])
 def getContext():
+    print("POST call on getContext")
     """Returns the context from the documents uploaded"""
 
     # Check for required headers
@@ -118,17 +125,19 @@ def getContext():
     # Get input from body
     data = request.json
     args = data["args"]
+    print("Args received", args)
 
     if "user id" not in args:
         return jsonify({"error": "Missing 'user id' in request body"}), 400
 
     context = avjoService.getContextService(args["user id"])
-
+    print("context is ", context)
     return jsonify(context)
 
 
 @app.route("/checkFraud", methods=["POST"])
 def checkFraud():
+    print("POST call on checkFraud")
     """Check from the RAG model if its a fraud and then conversate with user"""
     # Check for required headers
     if (
@@ -140,17 +149,19 @@ def checkFraud():
     # Get input from body
     data = request.json
     args = data["args"]
+    print("Args received", args)
 
     if "situation" not in args:
         return jsonify({"error": f"Missing situation in request body"}), 400
 
     fraudContext = avjoService.checkFraudService(args["situation"])
-
-    return jsonify("This has happened before its a fraud i see")
+    print("Fraud context is", fraudContext)
+    return jsonify(fraudContext)
 
 
 @app.route("/triggerEmail", methods=["POST"])
 def triggerEmail():
+    print("POST call on triggerEmail")
     """Generate and Trigger Email of Cyber Department"""
     # Check for required headers
     if (
@@ -162,6 +173,7 @@ def triggerEmail():
     # Get input from body
     data = request.json
     args = data["args"]
+    print("Args received", args)
     # name, address, contact number, awb number, breif overview of situation
     req_inp = ["user name", "address", "contact no", "situation"]
 
@@ -172,23 +184,23 @@ def triggerEmail():
         
     subject, body = avjoService.triggerEmailService(args["user name"], args["address"],args["contact no"],args["situation"])
     print(subject, body)
-    return 
+    return jsonify("Email triggered")
 
-@app.route("/generateReport", methods=["POST"])
-def generateReport():
-    """Generate a Report of the fraud & store it in DB"""
-    # Check for required headers
-    if (
-        "Content-Type" not in request.headers
-        or request.headers["Content-Type"] != "application/json"
-    ):
-        return jsonify({"error": "Content-Type must be application/json"}), 400
+# @app.route("/generateReport", methods=["POST"])
+# def generateReport():
+#     """Generate a Report of the fraud & store it in DB"""
+#     # Check for required headers
+#     if (
+#         "Content-Type" not in request.headers
+#         or request.headers["Content-Type"] != "application/json"
+#     ):
+#         return jsonify({"error": "Content-Type must be application/json"}), 400
 
-    # Get input from body
-    data = request.json
-    args = data["args"]
+#     # Get input from body
+#     data = request.json
+#     args = data["args"]
 
-    return jsonify("Report generate check DB")
+#     return jsonify("Report generate check DB")
 
 
 if __name__ == "__main__":

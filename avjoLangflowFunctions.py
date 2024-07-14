@@ -26,7 +26,7 @@ def generateFraudContext(situation):
                                 fallback_to_env_vars=False, # False by default
                                 tweaks=TWEAKS)
     
-    context = result[0].outputs[0].results['message'].data['text']
+    context = result[0].outputs[0].results['message'].data['text'] 
     return context
 
 def generateEmailLangflow(userName, address, contactNo, situation): 
