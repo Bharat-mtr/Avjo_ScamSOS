@@ -7,7 +7,7 @@ def checkDocService(userId):
     result = "Documents are uploaded"
     return result
 
-def getContextService(userId, userQuery):
+def getContextService(userId):
     '''Retrieve data from DB of userId, and generate conetxt from data+user query'''
     #Get data in string format from DB
 

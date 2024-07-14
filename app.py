@@ -102,13 +102,10 @@ def getContext():
     data = request.json
     args = data["args"]
 
-    if "user query" not in args:
-        return jsonify({"error": "Missing 'user query' in request body"}), 400
-
     if "user id" not in args:
         return jsonify({"error": "Missing 'user id' in request body"}), 400
 
-    context = avjoService.getContextService(args["user id"], args["user query"])
+    context = avjoService.getContextService(args["user id"])
 
     return jsonify(context)
 

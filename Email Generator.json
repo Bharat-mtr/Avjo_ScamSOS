@@ -220,7 +220,7 @@
                 "title_case": false,
                 "trace_as_input": true,
                 "type": "prompt",
-                "value": "Generate an email to the cyber crime department, written by agent Avjo on behalf of a user, using the following information:\n\n{input}\n\nProvide the email subject and body enclosed in XML-style tags. The email should be written in third person, explaining that it's being sent on behalf of the user. Include the user's details, the AWB number (if provided), and a clear explanation of the situation. Keep the tone professional and concise.\n\nOutput format:\n<subject>Concise subject line describing the situation</subject>\n\n<body>\nDear Cyber Crime Department,\n\n[Email body content]\n\nSincerely,\nAvjo\nCustomer Service Agent\n</body>\n\nNote:\n- Begin the email by stating that you're writing on behalf of the user.\n- Include all user details provided.\n- If the AWB number is \"Not provided\", state this in the email.\n- Summarize the situation clearly, highlighting any potential fraudulent activity.\n- Keep the email body between 100-150 words.\n- Use \"the user\" or \"the customer\" instead of \"I\" or \"me\".\n- Ensure the output is complete and ready to send without further editing.\n- Do not include any placeholders or fields to be filled in later."
+                "value": "Generate an email to the cyber crime department, written by agent Avjo on behalf of a user, using the following information:\n\n{input}\n\nProvide the email subject and body enclosed in XML-style tags. The email should be written in third person, explaining that it's being sent on behalf of the user. Include the user's details, and a clear explanation of the situation. Keep the tone professional and concise.\n\nOutput format:\n<subject>Concise subject line describing the situation</subject>\n\n<body>\nDear Cyber Crime Department,\n\n[Email body content]\n\nSincerely,\nAvjo\nCustomer Service Agent\n</body>\n\nNote:\n- Begin the email by stating that you're writing on behalf of the user.\n- Include all user details provided. \n- Summarize the situation clearly, highlighting any potential fraudulent activity.\n- Keep the email body between 100-150 words.\n- Use \"the user\" or \"the customer\" instead of \"I\" or \"me\".\n- Ensure the output is complete and ready to send without further editing.\n- Do not include any placeholders or fields to be filled in later."
               },
               "input": {
                 "field_type": "str",
@@ -790,8 +790,8 @@
       }
     ],
     "viewport": {
-      "x": 341.14752099860743,
-      "y": -356.19700318759396,
+      "x": 332.14752099860743,
+      "y": -347.19700318759396,
       "zoom": 0.48458423493690006
     }
   },
