@@ -32,9 +32,14 @@ def add_user():
         contact=data.get("contact", ""),
         context=data.get("context"),
     )
+    print("got user ", data)
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({"message": "User added successfully!"})
+    data = {
+        "user_id" : new_user.id
+    }
+    print("added user ", data)
+    return jsonify({"message": "User added successfully!", "data":data})
 
 
 @app.route("/users", methods=["GET"])
