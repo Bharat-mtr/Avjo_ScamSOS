@@ -105,9 +105,11 @@ def checkDoc():
 
     if "user id" not in args:
         return jsonify({"error": "Missing 'user id' in request body"}), 400
-
-    result = avjoService.checkDocService(args["user id"])
-    if result:
+    
+    user = User.query.get(args["user id"])
+    
+    print(user)
+    if user.context != None:
         response="Documents are uploaded"
     else:
         response="No documents are uploaded"    
