@@ -4,8 +4,16 @@ from dotenv import load_dotenv
 import os
 import avjoService
 from flask_sqlalchemy import SQLAlchemy
+from retell import Retell
+from fastapi.responses import JSONResponse
+from fastapi import Request
+import json
 
 load_dotenv()
+retell_client = Retell(
+    # Find the key in dashboard
+    api_key=os.environ.get("RETELL_API_KEY"),
+)
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"  # Use SQLite for simplicity
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -35,11 +43,9 @@ def add_user():
     print("got user ", data)
     db.session.add(new_user)
     db.session.commit()
-    data = {
-        "user_id" : new_user.id
-    }
+    data = {"user_id": new_user.id}
     print("added user ", data)
-    return jsonify({"message": "User added successfully!", "data":data})
+    return jsonify({"message": "User added successfully!", "data": data})
 
 
 @app.route("/users", methods=["GET"])
@@ -108,9 +114,9 @@ def checkDoc():
 
     result = avjoService.checkDocService(args["user id"])
     if result:
-        response="Documents are uploaded"
+        response = "Documents are uploaded"
     else:
-        response="No documents are uploaded"    
+        response = "No documents are uploaded"
     print("checkDoc output is ", response)
     return jsonify(response)
 
@@ -185,11 +191,13 @@ def triggerEmail():
     for inp in req_inp:
         if inp not in args:
             return jsonify({"error": f"Missing {inp} in request body"}), 400
-   
-        
-    subject, body = avjoService.triggerEmailService(args["user name"], args["address"],args["contact number"],args["situation"])
+
+    subject, body = avjoService.triggerEmailService(
+        args["user name"], args["address"], args["contact number"], args["situation"]
+    )
     print(subject, body)
     return jsonify("Email triggered")
+
 
 # @app.route("/generateReport", methods=["POST"])
 # def generateReport():
@@ -206,6 +214,51 @@ def triggerEmail():
 #     args = data["args"]
 
 #     return jsonify("Report generate check DB")
+
+
+# Example dictionary to store call statuses
+call_status = {}
+
+
+@app.post("/webhook")
+async def handle_webhook():
+    try:
+        post_data = request.get_json()
+
+        valid_signature = retell_client.verify(
+            json.dumps(post_data, separators=(",", ":")),
+            api_key=str(os.environ["RETELL_API_KEY"]),
+            signature=str(request.headers.get("X-Retell-Signature")),
+        )
+        if not valid_signature:
+            print(
+                "Received Unauthorized",
+                post_data["event"],
+                post_data["data"]["call_id"],
+            )
+            return jsonify({"message": "Unauthorized"}), 401
+        if post_data["event"] == "call_started":
+            print("Call started event", post_data["data"]["call_id"])
+        elif post_data["event"] == "call_ended":
+            print("Call ended event", post_data["data"]["call_id"])
+        elif post_data["event"] == "call_analyzed":
+            print("Call analyzed event", post_data["data"]["call_id"])
+        else:
+            print("Unknown event", post_data["event"])
+        call_status[post_data["data"]["call_id"]] = post_data["event"]
+        return "", 204
+    except Exception as err:
+        print(f"Error in webhook: {err}")
+        return jsonify({"message": "Internal Server Error"}), 500
+
+
+@app.route("/call_status/<call_id>", methods=["GET"])
+def get_call_status(call_id):
+    print(call_status)
+    if call_id in call_status:
+        return jsonify({"status": call_status[call_id]})
+    else:
+        return jsonify({"status": "Unknown"})
 
 
 if __name__ == "__main__":
